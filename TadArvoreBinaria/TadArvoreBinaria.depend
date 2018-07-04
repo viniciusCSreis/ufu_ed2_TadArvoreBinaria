@@ -1,0 +1,16 @@
+# depslib dependency file v1.0
+1530742861 source:c:\users\vinic\documents\github\ufu_ed2_tadarvorebinaria\tadarvorebinaria\main.c
+	<stdio.h>
+	<stdlib.h>
+	"ArvoreBin.h"
+
+1530744437 source:c:\users\vinic\documents\github\ufu_ed2_tadarvorebinaria\tadarvorebinaria\arvorebin.c
+	<stdio.h>
+	<stdlib.h>
+	"ArvoreBin.h"
+
+1530740182 c:\users\vinic\documents\github\ufu_ed2_tadarvorebinaria\tadarvorebinaria\arvorebindefinitions.h
+
+1530744726 c:\users\vinic\documents\github\ufu_ed2_tadarvorebinaria\tadarvorebinaria\arvorebin.h
+	"ArvoreBinDefinitions.h"
+
