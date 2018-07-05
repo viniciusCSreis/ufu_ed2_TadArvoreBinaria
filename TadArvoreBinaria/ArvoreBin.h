@@ -30,3 +30,15 @@ struct No * removeAtual(struct No * atual);
 
 //remove No utilizado por remove elem
 struct No * removeAtual(struct No * atual);
+
+int calculaAltura(ArvBin* raiz);
+int qtdeNos(ArvBin * raiz);
+int fatorBalanceamento(ArvBin * raiz);
+void rotacaoLL(ArvBin * raiz);
+void rotacaoRR(ArvBin * raiz);
+void rotacaoLR(ArvBin * raiz);
+void rotacaoRL(ArvBin * raiz);
+void ** alocacaoEstatica(ArvBin * raiz);
+int getInfo(void * p);
+int getAlt(void * p);
+

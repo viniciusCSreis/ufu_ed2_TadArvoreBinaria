@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-
+#include <math.h>
 #include "ArvoreBin.h"
 
 //criando árvore
@@ -116,6 +116,7 @@ int insereABB(ArvBin * raiz,int v)
     if(novo_No_a_ser_inserido==NULL)
         return 0;
     novo_No_a_ser_inserido->info=v;
+    novo_No_a_ser_inserido->alt=0;
     novo_No_a_ser_inserido->esq=NULL;
     novo_No_a_ser_inserido->dir=NULL;
 
@@ -146,6 +147,7 @@ int insereABB(ArvBin * raiz,int v)
             ant->esq=novo_No_a_ser_inserido;
 
     }
+    calculaAltura(raiz);
     return 1;
 
 
@@ -171,6 +173,8 @@ int removeABB(ArvBin * raiz,int v)
                 ant->esq = removeAtual(atual);
             else
                 ant->dir=removeAtual(atual);
+
+            calculaAltura(raiz);
             return 1;
 
         }
@@ -217,6 +221,173 @@ struct No * removeAtual(struct No * atual)
 
     q->dir=atual->dir;
     free(atual);
+
     return q;
 
 }
+int calculaAltura(ArvBin* raiz)
+{
+
+    if(raiz==NULL)
+        return 0;
+    struct No * no=*(raiz);
+    if(no==NULL)
+        return 0;
+    int altEsq=calculaAltura(&(no->esq));
+    int altDir=calculaAltura(&(no->dir));
+    if(altEsq>altDir)
+    {
+       no->alt=(altEsq+1);
+        return altEsq+1;
+    }
+
+    else
+    {
+        no->alt=(altDir+1);
+        return altDir+1;
+    }
+
+
+}
+
+int qtdeNos(ArvBin * raiz)
+{
+    struct No * no=*(raiz);
+    if(raiz==NULL)
+        return 0;
+    if(*(raiz)==NULL)
+        return 0;
+
+    int qtdeEsq=qtdeNos(&(no->esq));
+    int qtdeDir=qtdeNos(&(no->dir));
+
+    return (qtdeEsq+qtdeDir + 1);
+
+}
+int fatorBalanceamento(ArvBin * raiz)
+{
+    struct No * no=*(raiz);
+    return(
+           calculaAltura(&(no->esq))
+           - calculaAltura(&(no->dir))
+
+           );
+}
+
+
+int maior(int a, int b)
+{
+    if(a>b)
+        return a;
+    else
+        return b;
+}
+
+void rotacaoLL(ArvBin * raiz)
+{
+    struct No * no;
+    struct No * atual= * raiz;
+    no=atual->esq;          //(1)
+    atual->esq = no->dir;   //(2)
+    no->dir = atual;        //(3)
+
+    //Recalculando Altura
+    atual->alt = maior(
+                       calculaAltura( &(atual->esq ) )
+                       , calculaAltura(& (atual->dir))
+                       )
+                       +1;
+    no->alt = maior(
+                       calculaAltura( &(no->esq) )
+                       , atual->alt
+                       )
+                       +1;
+
+     *raiz=no;
+
+}
+void rotacaoRR(ArvBin * raiz)
+{
+    struct No * no;
+    struct No * atual= * raiz;
+    no=atual->dir;          //(1)
+    atual->dir = no->esq;   //(2)
+    no->esq = atual;        //(3)
+
+    //Recalculando Altura
+    atual->alt = maior(
+                       calculaAltura( &(atual->esq ) )
+                       , calculaAltura(& (atual->dir))
+                       )
+                       +1;
+    no->alt = maior(
+                       calculaAltura( & (no->dir) )
+                       , atual->alt
+                       )
+                       +1;
+
+
+     *raiz=no;
+
+}
+
+void rotacaoLR(ArvBin * raiz)
+{
+     struct No * atual= * raiz;
+    rotacaoRR(&(atual->esq));
+    rotacaoLL(raiz);
+
+}
+
+void rotacaoRL(ArvBin * raiz)
+{
+     struct No * atual= * raiz;
+    rotacaoLL(&(atual->dir));
+    rotacaoRR(raiz);
+
+}
+
+void prencherVetorEstatico(struct  No *  no , int p ,void ** vetor)
+{
+    if(no==NULL)
+        return;
+    vetor[p]=no;
+    prencherVetorEstatico(no->esq,p*2+1,vetor);
+    prencherVetorEstatico(no->dir,p*2+2,vetor);
+
+
+}
+
+void ** alocacaoEstatica(ArvBin * raiz)
+{
+    void ** vetor;
+    int n,i;
+    n=pow(2,calculaAltura(raiz))-1;
+
+    vetor=(void **)malloc(sizeof(void *)*n);
+    for(i=0;i<n;i++)
+        vetor[i]=NULL;
+    struct No * no = * (raiz);
+    vetor[0]=no;
+    prencherVetorEstatico(no,0,vetor);
+
+    return vetor;
+
+}
+int getInfo(void * p)
+{
+    if(p==NULL)
+        return 0;
+    struct No * no =(struct No *)p;
+    return no->info;
+}
+int getAlt(void * p)
+{
+    if(p==NULL)
+        return 0;
+    struct No * no =(struct No *)p;
+    return no->alt;
+}
+
+buscaEmProfundidade(vi,n,Adj)
+
